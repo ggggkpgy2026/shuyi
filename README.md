@@ -13,9 +13,13 @@
 
 ## 数据说明
 
-数据保存在当前浏览器的 `localStorage` 中。部署到 GitHub Pages 后，添加、编辑、删除仍然可用，但数据只保存在当前设备和当前浏览器里。
+数据默认保存在仓库根目录的 `data.json` 中。
 
-建议定期使用“导出 JSON”备份，需要迁移到另一台电脑或浏览器时再用“导入 JSON”恢复。
+页面打开时会自动读取 GitHub 上的 `data.json`。添加、编辑、删除后，先在页面内更新本地状态，再点击“保存到 Git”把当前清单提交回仓库。
+
+保存到 Git 需要填写 GitHub fine-grained personal access token。建议只给这个仓库的 `Contents: Read and write` 权限。token 只保存在当前浏览器的 `localStorage` 中，不会写入仓库。
+
+仍建议定期使用“导出 JSON”备份，需要迁移或恢复时可用“导入 JSON”。
 
 ## 部署
 
