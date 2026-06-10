@@ -1,0 +1,383 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>蜀一采购清单</title>
+<style>
+:root{--blue:#2563eb;--blue-dark:#1d4ed8;--red:#dc2626;--red-dark:#b91c1c;--bg:#f3f6fb;--card:#fff;--border:#e5e7eb;--text:#111827}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Microsoft YaHei",sans-serif}header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;padding:16px 18px;box-shadow:0 4px 14px rgba(37,99,235,.25)}h1{margin:0;font-size:24px;letter-spacing:.5px}main{max-width:1280px;margin:0 auto;padding:18px}.card{background:var(--card);border-radius:18px;padding:18px;margin-bottom:18px;box-shadow:0 8px 24px rgba(15,23,42,.08)}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field.wide{grid-column:span 2}label{font-size:13px;color:#64748b;font-weight:700}input,select,button{width:100%;min-height:46px;padding:10px 13px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px;background:#fff}input[type="file"]{padding:9px}input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.14)}button{border:none;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}button:hover{background:var(--blue-dark)}button.gray{background:#6b7280}button.gray:hover{background:#4b5563}button.danger{background:var(--red)}button.danger:hover{background:var(--red-dark)}.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:14px}.preview-box{display:none;margin-top:12px;padding:12px;border:1px dashed #cbd5e1;border-radius:14px;background:#f8fafc}.preview-box img{width:100%;max-width:260px;max-height:180px;object-fit:contain;border-radius:12px}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.summary-box{border-radius:16px;padding:16px;font-weight:800;display:flex;justify-content:space-between;align-items:center;min-height:72px}.summary-box .label{font-size:15px;color:#334155}.summary-box .value{font-size:24px}.summary-money{background:#e8f5e9;color:#14532d}.summary-count{background:#fff3e0;color:#7c2d12}.summary-qty{background:#e3f2fd;color:#0f3d75}.table-wrap{overflow-x:auto;background:#fff;border-radius:18px;box-shadow:0 8px 24px rgba(15,23,42,.08)}table{width:100%;min-width:1000px;border-collapse:separate;border-spacing:0;background:#fff}th,td{padding:14px 12px;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}th{background:#eef2f7;white-space:nowrap;font-weight:800;color:#0f172a}tbody tr:hover{filter:brightness(.985)}.pending-row{background:#fffdf0}.ordered-row{background:#f0f8ff}.received-row{background:#f4fff4}.item-img-wrap{display:flex;align-items:center;justify-content:center;width:96px;min-height:72px}.item-img{display:block;width:100%;max-width:96px;height:auto;max-height:96px;object-fit:contain;border-radius:12px;background:#e5e7eb;border:1px solid #e5e7eb}.price,.subtotal{color:#dc2626;font-weight:900}.badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 11px;border-radius:999px;font-size:14px;font-weight:800;white-space:nowrap}.status-pending{background:#fff3cd;color:#856404}.status-ordered{background:#d1ecf1;color:#0c5460}.status-received{background:#d4edda;color:#155724}.platform-taobao{background:#ffedd5;color:#c2410c}.platform-tmall{background:#fee2e2;color:#991b1b}.platform-1688{background:#fee2e2;color:#b91c1c}.platform-jd{background:#ffe4e6;color:#be123c}.platform-douyin{background:#111827;color:#fff}.platform-amazon{background:#232f3e;color:#ff9900}.platform-other{background:#e5e7eb;color:#374151}.no-image{display:inline-flex;align-items:center;justify-content:center;width:96px;min-height:46px;padding:8px 10px;background:#fff3cd;color:#856404;border-radius:10px;font-weight:800}.product-link{display:inline-flex;align-items:center;justify-content:center;background:#2563eb;color:white;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:800;white-space:nowrap}.product-link:hover{background:#1d4ed8}.row-buttons{display:flex;gap:8px;min-width:135px}.row-buttons button{min-height:40px;font-size:14px;padding:8px 12px;border-radius:10px}.empty{text-align:center;color:#777;padding:34px;background:#fff}.note-text{color:#475569;max-width:180px;word-break:break-word}.small-tip{color:#64748b;font-size:12px;line-height:1.4}.name-cell strong{font-size:17px;line-height:1.35}.model-cell{color:#334155;font-weight:700}
+@media(max-width:760px){header{padding:14px}h1{font-size:21px}main{padding:12px}.grid,.actions,.summary{grid-template-columns:1fr}.field.wide{grid-column:auto}.card{padding:14px;border-radius:16px}.summary-box .value{font-size:22px}.table-wrap{overflow:visible;background:transparent;box-shadow:none;border-radius:0}table,thead,tbody,tr,td{display:block}table{min-width:0;background:transparent}thead{display:none}tr{margin-bottom:14px;border-radius:16px;box-shadow:0 8px 24px rgba(15,23,42,.08);padding:14px;overflow:hidden}td{border:none;padding:8px 0;display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center}td::before{content:attr(data-label);color:#64748b;font-weight:800}td:first-child{padding-top:0}.item-img-wrap{width:100%;min-height:auto;background:#f8fafc;border-radius:14px}.item-img{width:100%;max-width:100%;height:auto;max-height:260px;object-fit:contain}.row-buttons{display:grid;grid-template-columns:1fr 1fr;width:100%}.row-buttons button{min-height:44px}.product-link{width:100%}.no-image{width:100%;min-height:48px}.name-cell{display:block;padding-bottom:2px}.name-cell::before{display:none}.name-cell strong{display:block;font-size:21px;line-height:1.3;color:#0f172a}.model-cell{display:block;padding-top:0;padding-bottom:12px;color:#475569;font-size:16px}.model-cell::before{content:"型号/规格：";color:#64748b;font-weight:800}.image-cell{display:block;padding:8px 0 12px}.image-cell::before{display:none}}
+/* 桌面端：让采购项之间有明显分隔，扫读时更容易辨认。 */
+@media(min-width:761px){
+  .table-wrap{
+    background:#f8fafc;
+    padding:14px;
+  }
+  table{
+    border-spacing:0 12px;
+    background:transparent;
+  }
+  thead th{
+    border-bottom:none;
+    padding-top:12px;
+    padding-bottom:12px;
+  }
+  tbody tr{
+    box-shadow:0 3px 12px rgba(15,23,42,.07);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  tbody tr:hover{
+    filter:none;
+    transform:translateY(-1px);
+    box-shadow:0 6px 18px rgba(15,23,42,.11);
+  }
+  tbody td{
+    border-top:1px solid #e2e8f0;
+    border-bottom:1px solid #e2e8f0;
+    padding-top:18px;
+    padding-bottom:18px;
+  }
+  tbody td:first-child{
+    border-left:1px solid #e2e8f0;
+    border-radius:14px 0 0 14px;
+  }
+  tbody td:last-child{
+    border-right:1px solid #e2e8f0;
+    border-radius:0 14px 14px 0;
+  }
+  .pending-row td{background:#fffdf0}
+  .ordered-row td{background:#f0f8ff}
+  .received-row td{background:#f4fff4}
+  .name-cell{
+    border-left-width:5px !important;
+  }
+  .pending-row .name-cell{border-left-color:#facc15}
+  .ordered-row .name-cell{border-left-color:#38bdf8}
+  .received-row .name-cell{border-left-color:#22c55e}
+}
+@media print{
+  @page{
+    size:letter landscape;
+    margin:10mm;
+  }
+  *{
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  body{
+    background:#fff;
+    color:#111827;
+    font-size:11px;
+  }
+  header,
+  .entry-card,
+  .row-buttons,
+  .product-link{
+    display:none !important;
+  }
+  main{
+    max-width:none;
+    padding:0;
+  }
+  .print-header{
+    display:block !important;
+    margin:0 0 10px;
+    padding:12px 14px;
+    border-bottom:none;
+    border-radius:10px;
+    background:linear-gradient(135deg,#1d4ed8,#2563eb) !important;
+    color:#fff;
+  }
+  .print-header h2{
+    margin:0;
+    font-size:24px;
+    letter-spacing:2px;
+    text-align:center;
+  }
+  .print-meta{
+    display:flex;
+    justify-content:space-between;
+    margin-top:8px;
+    color:#dbeafe;
+    font-size:11px;
+  }
+  .card{
+    box-shadow:none;
+    border-radius:0;
+    padding:0;
+    margin-bottom:8px;
+  }
+  .summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:6px;
+  }
+  .summary-box{
+    min-height:0;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    padding:7px 10px;
+  }
+  .summary-box .label{font-size:11px}
+  .summary-box .value{font-size:15px}
+  .table-wrap{
+    overflow:visible;
+    box-shadow:none;
+    border-radius:0;
+    padding:0;
+    background:#fff;
+  }
+  table{
+    min-width:0;
+    width:100%;
+    border-collapse:collapse;
+    border-spacing:0;
+    background:#fff;
+    table-layout:fixed;
+  }
+  thead{
+    display:table-header-group;
+  }
+  tr{
+    break-inside:avoid;
+    page-break-inside:avoid;
+    box-shadow:none !important;
+    transform:none !important;
+  }
+  th,td{
+    border:1px solid #cbd5e1 !important;
+    padding:6px 5px !important;
+    color:#111827 !important;
+    vertical-align:middle;
+    word-break:break-word;
+  }
+  th{
+    background:#dbeafe !important;
+    color:#0f172a !important;
+    font-size:10px;
+  }
+  tbody tr:nth-child(even) td{
+    background:#f8fafc !important;
+  }
+  tbody tr:nth-child(odd) td{
+    background:#ffffff !important;
+  }
+  .pending-row td{
+    background:#fff7d6 !important;
+  }
+  .ordered-row td{
+    background:#e0f2fe !important;
+  }
+  .received-row td{
+    background:#dcfce7 !important;
+  }
+  .badge{
+    padding:3px 7px;
+    border-radius:999px;
+    font-size:10px;
+  }
+  .status-pending{background:#fef3c7 !important;color:#92400e !important}
+  .status-ordered{background:#cffafe !important;color:#155e75 !important}
+  .status-received{background:#bbf7d0 !important;color:#166534 !important}
+  .platform-taobao{background:#ffedd5 !important;color:#c2410c !important}
+  .platform-tmall{background:#fee2e2 !important;color:#991b1b !important}
+  .platform-1688{background:#fee2e2 !important;color:#b91c1c !important}
+  .platform-jd{background:#ffe4e6 !important;color:#be123c !important}
+  .platform-douyin{background:#111827 !important;color:#fff !important}
+  .platform-amazon{background:#232f3e !important;color:#ff9900 !important}
+  .platform-other{background:#e5e7eb !important;color:#374151 !important}
+  .price,.subtotal{
+    color:#dc2626 !important;
+  }
+  .item-img-wrap{
+    width:auto;
+    min-height:0;
+  }
+  .item-img{
+    max-width:42px;
+    max-height:42px;
+    border-radius:0;
+  }
+  .no-image{
+    width:auto;
+    min-height:0;
+    padding:0;
+    background:#fef3c7 !important;
+    color:#92400e !important;
+    font-size:10px;
+    padding:3px 6px;
+    border-radius:6px;
+  }
+  .note-text{
+    max-width:none;
+  }
+  th:nth-child(10),
+  td:nth-child(10),
+  th:nth-child(12),
+  td:nth-child(12){
+    display:none;
+  }
+}
+@media print{
+  @page{
+    size:letter landscape;
+    margin:8mm;
+  }
+  body{
+    font-size:9.5px;
+  }
+  .print-header{
+    margin-bottom:8px;
+    padding:10px 14px 9px;
+    border-radius:8px;
+    background:linear-gradient(135deg,#0f3b82,#2563eb) !important;
+  }
+  .print-header h2{
+    font-size:22px;
+    line-height:1.15;
+    letter-spacing:3px;
+  }
+  .print-meta{
+    margin-top:7px;
+    font-size:10px;
+  }
+  .summary{
+    gap:5px;
+    margin-bottom:7px;
+  }
+  .summary-box{
+    border:none;
+    border-radius:8px;
+    padding:7px 11px;
+    box-shadow:inset 0 0 0 1px rgba(15,23,42,.13);
+  }
+  .summary-money{background:#e7f5ea !important}
+  .summary-count{background:#fff2dc !important}
+  .summary-qty{background:#e2f2ff !important}
+  .summary-box .label{
+    font-size:10px;
+    color:#0f172a;
+  }
+  .summary-box .value{
+    font-size:15px;
+  }
+  .table-wrap{
+    border:1px solid #bfd0e3;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  table{
+    table-layout:fixed;
+    border-collapse:collapse;
+  }
+  th,td{
+    border-color:#c7d4e4 !important;
+    padding:5px 6px !important;
+    line-height:1.25;
+  }
+  th{
+    background:#d8e8fb !important;
+    color:#0b1f3a !important;
+    font-size:9.5px;
+    letter-spacing:.2px;
+  }
+  td{
+    font-size:9.5px;
+    font-weight:600;
+  }
+  tbody tr:nth-child(even) td{
+    background:#f6f9fd !important;
+  }
+  tbody tr:nth-child(odd) td{
+    background:#ffffff !important;
+  }
+  .pending-row td{background:#fffaf0 !important}
+  .ordered-row td{background:#f0f9ff !important}
+  .received-row td{background:#f0fdf4 !important}
+  .name-cell strong{
+    font-size:12.5px;
+    line-height:1.25;
+    font-weight:800;
+  }
+  .model-cell{
+    font-size:9.5px;
+    font-weight:700;
+  }
+  .price,.subtotal{
+    font-size:10.5px;
+    font-weight:800;
+  }
+  .badge{
+    padding:2px 6px;
+    font-size:8.8px;
+    line-height:1.25;
+  }
+  .no-image{
+    font-size:8.8px;
+  }
+  th:nth-child(1),td:nth-child(1){width:14%}
+  th:nth-child(2),td:nth-child(2){width:10%}
+  th:nth-child(3),td:nth-child(3){width:8%}
+  th:nth-child(4),td:nth-child(4){width:7%}
+  th:nth-child(5),td:nth-child(5){width:13%}
+  th:nth-child(6),td:nth-child(6){width:8%}
+  th:nth-child(7),td:nth-child(7){width:6%}
+  th:nth-child(8),td:nth-child(8){width:9%}
+  th:nth-child(9),td:nth-child(9){width:8%}
+  th:nth-child(11),td:nth-child(11){width:17%}
+}
+</style>
+</head>
+<body>
+<header><h1>蜀一采购清单</h1></header>
+<main>
+  <div class="card entry-card">
+    <div class="grid">
+      <div class="field"><label>商品名称</label><input id="name" placeholder="例如 一次性饭盒"></div>
+      <div class="field"><label>型号 / 规格</label><input id="model" placeholder="例如 1000ml / 12oz / M号"></div>
+      <div class="field"><label>采购平台</label><select id="platform"><option value="">请选择采购平台</option><option>淘宝</option><option>天猫</option><option>1688</option><option>京东</option><option>抖音</option><option>亚马逊</option><option>其它</option></select></div>
+      <div class="field"><label>店铺 / 供应商</label><input id="store" placeholder="例如 京东自营 / 供应商名称"></div>
+      <div class="field"><label>单价</label><input id="price" type="number" step="0.01" inputmode="decimal" placeholder="单价"></div>
+      <div class="field"><label>数量</label><input id="qty" type="number" step="1" inputmode="numeric" placeholder="数量"></div>
+      <div class="field"><label>本地图片</label><input id="imageFile" type="file" accept="image/*"><div class="small-tip">可直接从电脑/手机选择图片</div></div>
+      <div class="field"><label>采购链接</label><input id="link" placeholder="商品链接"></div>
+      <div class="field"><label>状态</label><select id="status"><option>待采购</option><option>已下单</option><option>已到货</option></select></div>
+      <div class="field wide"><label>备注</label><input id="note" placeholder="可不填"></div>
+    </div>
+    <div id="previewBox" class="preview-box"><div class="small-tip">图片预览：</div><img id="previewImg" alt="图片预览"></div>
+    <div class="actions"><button onclick="saveItem()">保存 / 添加</button><button class="gray" onclick="clearForm()">清空</button><button class="gray" onclick="exportCSV()">导出 CSV</button><button class="gray" onclick="exportJSON()">导出 JSON</button><button class="gray" onclick="$('jsonFile').click()">导入 JSON</button><button class="gray" onclick="printPurchaseList()">打印采购单</button><input id="jsonFile" type="file" accept="application/json,.json" style="display:none"></div>
+  </div>
+  <div class="print-header" style="display:none"><h2>蜀一采购清单</h2><div class="print-meta"><span>打印日期：<span id="printDate"></span></span><span>制表人：____________</span><span>审核：____________</span></div></div>
+  <div class="card summary"><div class="summary-box summary-money"><span class="label">总金额</span><span class="value">$<span id="total">0.00</span></span></div><div class="summary-box summary-count"><span class="label">商品种类</span><span class="value"><span id="count">0</span></span></div><div class="summary-box summary-qty"><span class="label">总数量</span><span class="value"><span id="qtyTotal">0</span></span></div></div>
+  <div class="table-wrap"><table><thead><tr><th>商品名称</th><th>型号/规格</th><th>图片</th><th>平台</th><th>店铺/供应商</th><th>单价</th><th>数量</th><th>小计</th><th>状态</th><th>链接</th><th>备注</th><th>操作</th></tr></thead><tbody id="list"></tbody></table></div>
+</main>
+<script>
+let items = JSON.parse(localStorage.getItem("restaurantPurchaseItemsV2") || "[]");
+let editingIndex = null;
+let currentImageData = "";
+function saveData(){localStorage.setItem("restaurantPurchaseItemsV2", JSON.stringify(items));}
+function $(id){return document.getElementById(id);}
+$("imageFile").addEventListener("change",function(){const file=this.files&&this.files[0];if(!file)return;if(!file.type.startsWith("image/")){alert("请选择图片文件");this.value="";return;}const reader=new FileReader();reader.onload=function(e){currentImageData=e.target.result;$("previewImg").src=currentImageData;$("previewBox").style.display="block";};reader.readAsDataURL(file);});
+$("jsonFile").addEventListener("change",function(){const file=this.files&&this.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(e){try{const data=JSON.parse(e.target.result);if(!Array.isArray(data)){alert("JSON格式不正确：需要是采购清单数组");return;}const ok=confirm("导入后会覆盖当前清单。确定导入吗？");if(!ok)return;items=data.map(x=>({name:String(x.name||""),model:String(x.model||""),platform:String(x.platform||""),store:String(x.store||""),price:Number(x.price||0),qty:Number(x.qty||0),image:String(x.image||""),link:String(x.link||""),status:String(x.status||"待采购"),note:String(x.note||"")}));saveData();clearForm();render();alert("导入成功");}catch(err){alert("导入失败：JSON文件无法解析");}finally{$("jsonFile").value="";}};reader.readAsText(file,"utf-8");});
+function saveItem(){const item={name:$("name").value.trim(),model:$("model").value.trim(),platform:$("platform").value,store:$("store").value.trim(),price:Number($("price").value||0),qty:Number($("qty").value||0),image:currentImageData,link:$("link").value.trim(),status:$("status").value,note:$("note").value.trim()};if(!item.name){alert("商品名称不能为空");return;}if(editingIndex===null){items.push(item);}else{if(!currentImageData&&items[editingIndex].image){item.image=items[editingIndex].image;}items[editingIndex]=item;editingIndex=null;}saveData();clearForm();render();}
+function editItem(index){const item=items[index];editingIndex=index;currentImageData=item.image||"";$("name").value=item.name||"";$("model").value=item.model||"";$("platform").value=item.platform||"";$("store").value=item.store||"";$("price").value=item.price||"";$("qty").value=item.qty||"";$("link").value=item.link||"";$("status").value=item.status||"待采购";$("note").value=item.note||"";$("imageFile").value="";if(currentImageData){$("previewImg").src=currentImageData;$("previewBox").style.display="block";}else{$("previewImg").removeAttribute("src");$("previewBox").style.display="none";}window.scrollTo({top:0,behavior:"smooth"});}
+function deleteItem(index){if(confirm("确定删除这一项吗？")){items.splice(index,1);saveData();render();}}
+function clearForm(){editingIndex=null;currentImageData="";["name","model","store","price","qty","link","note"].forEach(id=>$(id).value="");$("platform").value="";$("status").value="待采购";$("imageFile").value="";$("previewImg").removeAttribute("src");$("previewBox").style.display="none";}
+function money(n){return Number(n||0).toFixed(2);}
+function escapeHtml(text){return String(text||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+function safeUrl(url){const u=String(url||"").trim();if(!u)return "";if(u.startsWith("http://")||u.startsWith("https://"))return escapeHtml(u);return escapeHtml("https://"+u);}
+function rowClass(status){if(status==="已下单")return "ordered-row";if(status==="已到货")return "received-row";return "pending-row";}
+function statusBadge(status){if(status==="已下单")return `<span class="badge status-ordered">已下单</span>`;if(status==="已到货")return `<span class="badge status-received">已到货</span>`;return `<span class="badge status-pending">待采购</span>`;}
+function platformBadge(platform){const p=platform||"其它";const map={"淘宝":"platform-taobao","天猫":"platform-tmall","1688":"platform-1688","京东":"platform-jd","抖音":"platform-douyin","亚马逊":"platform-amazon","其它":"platform-other"};return `<span class="badge ${map[p]||"platform-other"}">${escapeHtml(p)}</span>`;}
+function render(){const tbody=$("list");tbody.innerHTML="";let total=0;let qtyTotal=0;if(items.length===0){tbody.innerHTML=`<tr><td class="empty" colspan="12">暂无采购项目</td></tr>`;}items.forEach((item,index)=>{const subtotal=Number(item.price||0)*Number(item.qty||0);total+=subtotal;qtyTotal+=Number(item.qty||0);const link=safeUrl(item.link);const image=item.image||"";tbody.innerHTML+=`<tr class="${rowClass(item.status)}"><td data-label="商品名称" class="name-cell"><strong>${escapeHtml(item.name)}</strong></td><td data-label="型号/规格" class="model-cell">${escapeHtml(item.model)||"-"}</td><td data-label="图片" class="image-cell">${image?`<a class="item-img-wrap" href="${link||image}" target="_blank"><img class="item-img" src="${image}" alt="${escapeHtml(item.name)}"></a>`:`<span class="no-image">无图片</span>`}</td><td data-label="平台">${platformBadge(item.platform)}</td><td data-label="店铺/供应商">${escapeHtml(item.store)||"-"}</td><td data-label="单价" class="price">$${money(item.price)}</td><td data-label="数量"><strong>${escapeHtml(item.qty)}</strong></td><td data-label="小计" class="subtotal">$${money(subtotal)}</td><td data-label="状态">${statusBadge(item.status)}</td><td data-label="链接">${link?`<a class="product-link" href="${link}" target="_blank">查看商品</a>`:"-"}</td><td data-label="备注"><span class="note-text">${escapeHtml(item.note)||"-"}</span></td><td data-label="操作"><div class="row-buttons"><button onclick="editItem(${index})">编辑</button><button class="danger" onclick="deleteItem(${index})">删除</button></div></td></tr>`;});$("total").innerText=money(total);$("count").innerText=items.length;$("qtyTotal").innerText=qtyTotal;}
+function exportJSON(){const data=JSON.stringify(items,null,2);const blob=new Blob([data],{type:"application/json;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");const date=new Date().toISOString().slice(0,10);a.href=url;a.download=`蜀一采购清单_${date}.json`;a.click();URL.revokeObjectURL(url);}
+function exportCSV(){const rows=[["商品名称","型号/规格","平台","店铺/供应商","单价","数量","小计","状态","采购链接","备注"]];items.forEach(i=>rows.push([i.name,i.model,i.platform,i.store,i.price,i.qty,Number(i.price||0)*Number(i.qty||0),i.status,i.link,i.note]));const csv=rows.map(row=>row.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(",")).join("\n");const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="蜀一采购清单.csv";a.click();URL.revokeObjectURL(url);}
+function updatePrintDate(){const now=new Date();$("printDate").innerText=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;}
+function printPurchaseList(){updatePrintDate();window.print();}
+updatePrintDate();
+render();
+</script>
+</body>
+</html>
+
